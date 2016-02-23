@@ -25,7 +25,10 @@
         "fuel/parser": "dev-1.7/master",
         "fuelphp/upload": "2.0.2",
         "monolog/monolog": "1.5.*",
-        "michelf/php-markdown": "1.4.0"
+        "michelf/php-markdown": "1.4.0",
+		"cboden/ratchet": "0.2.*",
+		"react/zmq": "0.1.*",
+		"ruflin/elastica": "dev-master"
     },
     "suggest": {
         "dwoo/dwoo" : "Allow Dwoo templating with the Parser package",
