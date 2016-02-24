@@ -7,128 +7,141 @@ class Helper_Wa
 	public static function wa_initialize() {
 		$index = "nanitabe";
 		$type = "foods";
-		$mapping = array(
+		$mapping = [
 //{{{1			
-			"food_id" => array(
+			"food_id" => [
 				"type" => "integer",
-				),
-			"shop_id" => array(
+				],
+			"shop_id" => [
 				"type" => "integer",
-				),
-			"name" => array(
+				],
+			"name" => [
 				"type" => "string",
-				),
-			"price" => array(
+				],
+			"price" => [
 				"type" => "integer",
-				),
-			"image_path" => array(
+				],
+			"image_path" => [
 				"type" => "string",
 				"index" => "not_analyzed",
-				),
-			"longti" => array(
+				],
+			"longti" => [
 				"type" => "double",
-				),
-			"lati" => array(
+				],
+			"lati" => [
 				"type" => "double",
-				),
-			"cat1" => array(
+				],
+			"cat1" => [
 				"type" => "string",
-				),
-			"cat2" => array(
+				],
+			"cat2" => [
 				"type" => "string",
-				),
-			"cat3" => array(
+				],
+			"cat3" => [
 				"type" => "string",
-				),
-			"cat4" => array(
+				],
+			"cat4" => [
 				"type" => "string",
-				),
-			"cat5" => array(
+				],
+			"cat5" => [
 				"type" => "string",
-				),
-			"cat6" => array(
+				],
+			"cat6" => [
 				"type" => "string",
-				),
-			"tag1" => array(
+				],
+			"tag1" => [
 				"type" => "string",
-				),
-			"tag2" => array(
+				],
+			"tag2" => [
 				"type" => "string",
-				),
-			"tag3" => array(
+				],
+			"tag3" => [
 				"type" => "string",
-				),
-			"tag4" => array(
+				],
+			"tag4" => [
 				"type" => "string",
-				),
-			"tag5" => array(
+				],
+			"tag5" => [
 				"type" => "string",
-				),
-			"tag6" => array(
+				],
+			"tag6" => [
 				"type" => "string",
-				),
-			"tag7" => array(
+				],
+			"tag7" => [
 				"type" => "string",
-				),
-			"tag8" => array(
+				],
+			"tag8" => [
 				"type" => "string",
-				),
-			"tag9" => array(
+				],
+			"tag9" => [
 				"type" => "string",
-				),
-			"tag10" => array(
+				],
+			"tag10" => [
 				"type" => "string",
-				),
-			"created" => array(
+				],
+			"created" => [
 				"type" => "string",
-				),
-			"updated" => array(
+				],
+			"updated" => [
 				"type" => "string",
-				),
-			);
+				],
+			];
 //}}}1
 		\Helper_Es::create_index($index, $type, $mapping);
 	}
 		
 	public static function get_initial($request) {
-		$res = array();
+		$res = [];
 		$longti = $request["longti"];
 		$lati = $request["lati"];
 		$price = $request["price"];
-		$query = array(
-			"filtered" => array(
-				"query" => array(
-					"match_all" => array()
-				),
-				"filter" => array(
-					"bool" => array(
-						"must" => array(
-							"range" => array(
-								"price" => array(
+		$query = [
+			"timeout" => 20 * 1000,
+			"from" => 0,
+			"size" => 10,
+			"filtered" => [
+				"sort" => [
+					"yes_score" => [
+						"order" => "desc",
+					],
+					"_score",
+				],
+				"query" => [
+					"match_all" => []
+				],
+				"filter" => [
+					"bool" => [
+						"must" => [
+							"range" => [
+								"price" => [
 									"lt" => $price,
-								)
-							),
-							"geo_distance_range" => array(
+								]
+							],
+							"geo_distance_range" => [
 								"from" => "0km",
 								"to" => "0.5km",
-								"pin.location" => array(
+								"pin.location" => [
 									"lat" => $lati,
 									"lon" => $longti
-								)))))));
+								]]]]]]];
 		$res = \Helper_Es::execute_query($query);
-		$ids = array();
 		foreach($res["hits"]["hits"] as $hit) {
-			$ids[] = $hit["food_id"];
+			$pics[] = DOMAIN . $hit["image_path"];
 		}	
-		return $res;
+		return $pics;
 	}
+
+	public static function get_request($query) {
+		$res = [];
+		return $res;
+	}	
 
 	public static function import_food($id) {
 		$index = 'nanitabe';
 		$type = 'foods';
 		$food = \Model_Food::find($id);
 		$shop = \Model_Shop::find($food["shop_id"]);
-		$doc = array(
+		$doc = [
 			"food_id" => $food["id"],
 			"name" => $food["name"],
 			"shop_id" => $food["shop_id"],
@@ -140,6 +153,9 @@ class Helper_Wa
 			"tag3" => $food["tag3"],
 			"tag4" => $food["tag4"],
 			"tag5" => $food["tag4"],
+			"yes_score" => $food["yes"],
+			"no_score" => $food["no"],
+			"food_score" => $food["score"],
 			//"created" => $food["created"],
 			"image_path" => $food["image_1"],
 			//"lati" => $food["lati"],
@@ -151,8 +167,43 @@ class Helper_Wa
 			"shop_category" => $shop["category"],
 			"shop_zip" => $shop["zip"],
 			//"shop_image" => $shop["image"],
-		);	
+		];	
 		return \Helper_Es::import_document($index, $type, $id, $doc);
+	}
+
+	public static function delete_document($id) {
+		$index = 'nanitabe';
+		$type = 'foods';
+		$food = \Model_Food::find($id);
+		$shop = \Model_Shop::find($food["shop_id"]);
+		$doc = [
+			"food_id" => $food["id"],
+			"name" => $food["name"],
+			"shop_id" => $food["shop_id"],
+			"cat1" => $food["cat1"],
+			"cat2" => $food["cat2"],
+			"cat3" => $food["cat3"],
+			"tag1" => $food["tag1"],
+			"tag2" => $food["tag2"],
+			"tag3" => $food["tag3"],
+			"tag4" => $food["tag4"],
+			"tag5" => $food["tag4"],
+			"yes_score" => $food["yes"],
+			"no_score" => $food["no"],
+			"food_score" => $food["score"],
+			//"created" => $food["created"],
+			"image_path" => $food["image_1"],
+			//"lati" => $food["lati"],
+			//"longti" => $food["longti"],
+			"price" => $food["price"],
+			"updated" => $food["updated"],
+			"shop_name" => $shop["name"],
+			"shop_address" => $shop["address"],
+			"shop_category" => $shop["category"],
+			"shop_zip" => $shop["zip"],
+			//"shop_image" => $shop["image"],
+		];	
+		return \Helper_Es::delete_document($index, $type, $id, $doc);
 	}
 }
 
