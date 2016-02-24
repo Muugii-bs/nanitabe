@@ -13,6 +13,7 @@ class Create_shops
 			'address' => array('constraint' => 200, 'type' => 'varchar', 'null' => true),
 			'longti' => array('constraint' => 11, 'type' => 'int', 'null' => true),
 			'lati' => array('constraint' => 11, 'type' => 'int', 'null' => true),
+			'image' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
 			'category' => array('constraint' => 100, 'type' => 'varchar', 'null' => true),
 			'created_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),
 			'updated_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),

@@ -13,10 +13,18 @@ class Controller_Home extends Controller_Base
 	
 	public function action_index()
 	{
-		$data = array();
-		$data['shop'] = Model_Shop::find($this->current_admin['shop_id']);
+		$shop = Model_Shop::find($this->current_admin['shop_id']);
 		
-		// TODO foodsの取得
+		// TODO ページネーション
+		$foods = Model_Food::find('all', array(
+			'where' => array(
+				array('shop_id', $shop->id,)
+			)
+		));
+
+		$data = array();
+		$data['shop'] = $shop;
+		$data['foods'] = $foods;
 
 		$this->template->title = "ホーム";
 		$this->template->content = View::forge('home/index', $data);
