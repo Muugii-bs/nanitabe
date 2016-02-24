@@ -23,29 +23,31 @@ class Ws_Server extends Ratchet_Ws
 		parent::onOpen($conn);
 		$this->clients->attach($conn);
 		static::$members[] = array(
-			$conn->resourceId => '');
-		$test = array(
+				$conn->resourceId => '');
+		$status = array(
 			'action' => 'Open',
 			'error' => 'none',
 		);
-		$conn->send(json_encode($test)); 
+		$conn->send(json_encode($status)); 
 	}
 
 	public function onClose(\Ratchet\ConnectionInterface $conn) {
 		parent::onClose($conn);
-		$test = array(
+		$status = array(
 			'action' => 'Close',
 			'error' => 'none',
 		);
-		$conn->send(json_encode($test));
+		$conn->send(json_encode($status));
 		$conn->close();
 		$this->clients->detach($conn);
 		unset(static::$members[$conn->resourceId]);
+		/*
 		Log::debug('********** '.__FUNCTION__.' begin **********');
 		Log::debug('before members : '.print_r($this->clients, true));
 		Log::debug('join resourceId : '.$conn->resourceId);
 		Log::debug('after members : '.print_r($this->clients, true));
 		Log::debug('********** '.__FUNCTION__.' end **********');
+		 */
 	}	
 
 	public function onError(\Ratchet\ConnectionInterface $conn, \Exception $e) {
@@ -56,12 +58,34 @@ class Ws_Server extends Ratchet_Ws
 	public function onMessage(\Ratchet\ConnectionInterface $client, $msg) {
 		parent::onMessage($client, $msg);
 		$request = json_decode($msg, true);
+		$res = array(
+			"body" => array(),
+			"error" => ""
+		);
 		switch ($request["type"]) {
 			case "init":
-				$client->send("initialized. Your id is " . $client->resourceId);
+				if(isset($request["body"]) && $request["body"]) {
+					$res["body"] = \Helper_Es::get_initial($request["body"]);	
+					$res["error"] = "";
+					$client->send($res);
+				}
+				else {
+					$res["error"] = "Null body error!";
+					$res["body"] = [];
+					$client->send(json_encode($res));
+				}
 			case "request":
-				static::$members[$client->resourceId] = $request["body"];
-				$client->send(static::$members[$client->resourceId]);
+				if(isset($request["body"]) && $request["body"]) {
+					static::$members[$client->resourceId] = $request["body"];
+					$res["body"] = \Helper_Es::get_response(static::$members[$client->resourceId], $request["body"]);
+					$res["error"] = "";
+					$client->send($res);
+				}
+				else {
+					$res["error"] = "Null request error!";
+					$res["body"] = [];
+					$client->send(json_encode($res));
+				}
 		}
 	}	
 }
