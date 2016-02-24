@@ -18,7 +18,7 @@ class Controller_Home extends Controller_Base
 		
 		// TODO foodsの取得
 
-		$this->template->title = "Users";
+		$this->template->title = "ホーム";
 		$this->template->content = View::forge('home/index', $data);
 	}
 }

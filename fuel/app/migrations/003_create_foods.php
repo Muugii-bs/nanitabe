@@ -11,7 +11,7 @@ class Create_foods
 			'name' => array('constraint' => 100, 'type' => 'varchar'),
 			'shop_id' => array('constraint' => 8, 'type' => 'int'),
 			'price' => array('constraint' => 11, 'type' => 'int'),
-			'url' => array('constraint' => 255, 'type' => 'varchar'),
+			'image_1' => array('constraint' => 255, 'type' => 'varchar'),
 			'cat1' => array('constraint' => 100, 'type' => 'varchar'),
 			'cat2' => array('constraint' => 100, 'type' => 'varchar', 'null' => true),
 			'cat3' => array('constraint' => 100, 'type' => 'varchar', 'null' => true),
