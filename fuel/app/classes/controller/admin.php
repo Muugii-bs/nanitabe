@@ -14,7 +14,7 @@
  * The Admin Controller.
  *
  * @package  app
- * @extends  Controller
+ * @extends  Controller_Base
  */
 class Controller_Admin extends Controller_Base
 {
@@ -24,9 +24,6 @@ class Controller_Admin extends Controller_Base
 	{
         //すでにログイン済であればログイン後のページへリダイレクト
         Auth::check() and Response::redirect('/');
-
-        //エラーメッセージ用変数初期化
-        $error = null;
 
         //ログイン用のオブジェクト生成
         $auth = Auth::instance();
@@ -38,15 +35,16 @@ class Controller_Admin extends Controller_Base
 			{
                 // ログイン成功時、ログイン後のページへリダイレクト
                 Response::redirect('/');
-            }else{
+            }
+			else
+			{
                 // ログイン失敗時、エラーメッセージ作成
-                $error = 'ユーザ名かパスワードに誤りがあります';
+				Session::set_flash('error', 'ユーザ名かパスワードに誤りがあります');
             }
         }
 
         //ビューテンプレートを呼び出し
         $data = array();
-        $data['error'] = $error;
         $this->template->title = 'login';
         $this->template->content = View::forge('admin/login', $data);
 
@@ -85,7 +83,7 @@ class Controller_Admin extends Controller_Base
 					{
 						$db->commit_transaction();
 						Session::set_flash('success', '管理者の保存に成功しました #'.$admin->id.'.');
-						Response::redirect('shop');
+						Response::redirect('admin/home');
 					}
 					else
 					{
@@ -108,10 +106,12 @@ class Controller_Admin extends Controller_Base
 		$this->template->content = View::forge('admin/create');
 	}
 	
-    public function action_logout() {
+    public function action_logout()
+	{
 		$auth = Auth::instance();
 		$auth->logout();
 		
 		Response::redirect('/');
     }
+
 }
