@@ -10,7 +10,7 @@ return array(
 		),
 		'Ratchet_Ws' => array(
 //			'ws_uri' => 'ws://example.com/ws', // For Proxy.
-			'domain' => 'example.com',
+			'domain' => 'ec2-52-25-104-208.us-west-2.compute.amazonaws.com',
 			'port' => '8080',
 		),
 	),
