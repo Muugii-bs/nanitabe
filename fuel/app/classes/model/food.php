@@ -10,6 +10,9 @@ class Model_Food extends Model
 		'name',
 		'shop_id',
 		'price',
+		'yes',
+		'no',
+		'score',
 		'image_1',
 		'cat1',
 		'cat2',
@@ -94,24 +97,24 @@ class Model_Food extends Model
 		{
 			return null;
 		}
-		$tmp_image_path = DOCROOT . 'upload/'.$image_name;
-		$shop_folder_path = DOCROOT . 'image/'.$shop_id;
+		$tmp_image_path = 'upload/'.$image_name;
+		$shop_folder_path = 'image/'.$shop_id;
 
 		$image_info = new SplFileInfo($image_name);
 
 		// shop_idフォルダをなければ作成
-		if ( ! file_exists($shop_folder_path))
+		if ( ! file_exists(DOCROOT.$shop_folder_path))
 		{
-			if ( ! mkdir($shop_folder_path, 0777))
+			if ( ! mkdir(DOCROOT.$shop_folder_path, 0777))
 			{
 				return null;
 			}
 		}
 
 		$image_new_path = $shop_folder_path.'/'.$food_id.'.'.$image_info->getExtension();
-		if (rename($tmp_image_path, $image_new_path))
+		if (rename(DOCROOT.$tmp_image_path, DOCROOT.$image_new_path))
 		{
-			return $image_new_path;
+			return HOST.$image_new_path;
 		}
 		return null;
 	}

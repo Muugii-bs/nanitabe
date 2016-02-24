@@ -21,11 +21,11 @@
 				<div class="form-group">
 					<?php echo Form::label('料理画像1', 'image_1', array('class'=>'col-sm-2 control-label')); ?>
 						<div class="col-sm-9">
-							<?php echo Form::input('image_1', Input::post('image_1', isset($product) ? $product->image_1 : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'商品画像1')); ?>
+							<?php echo Form::input('image_1', Input::post('image_1', isset($food) ? $food->image_1 : ''), array('class' => 'col-md-4 form-control', 'placeholder'=> '料理画像1')); ?>
 							<div id="image_1_upload"><i class="fa fa-upload"></i> アップロード</div>
-							<div id="image_1_thumbnail" class="thumbnail-up"<?php if(isset($product)) echo Input::post('image_1', strlen($product->image_1) > 5  ? ' style="display: block;"' : ''); ?>>
-							<?php if(isset($product)) echo Input::post('image_1', strlen($product->image_1) > 5 ? '<img src="/upload/' . $product->image_1 . '" alt="' . $product->image_1 . '" />' : '<img src="" alt="image_1" />'); else echo '<img src="" alt="image_1" />'; ?>
-							<a class="delete_img btn btn-default btn-xs" data-id="#form_image_1" href="javascript:void(0);" onclick="return confirm('削除します。よろしいですか？')"<?php if(isset($product)) echo Input::post('image_1', strlen($product->image_1) > 5  ? ' style="display: inline;"' : ''); ?>><i class="fa fa-trash-o"></i> 削除</a>
+							<div id="image_1_thumbnail" class="thumbnail-up"<?php if(isset($food)) echo Input::post('image_1', strlen($food->image_1) > 5  ? ' style="display: block;"' : ''); ?>>
+							<?php if(isset($food)) echo Input::post('image_1', strlen($food->image_1) > 5 ? '<img src="' . $food->image_1 . '" alt="' . $food->image_1 . '" />' : '<img src="" alt="image_1" />'); else echo '<img src="" alt="image_1" />'; ?>
+							<a class="delete_img btn btn-default btn-xs" data-id="#form_image_1" href="javascript:void(0);" onclick="return confirm('削除します。よろしいですか？')"<?php if(isset($product)) echo Input::post('image_1', strlen($food->image_1) > 5  ? ' style="display: inline;"' : ''); ?>><i class="fa fa-trash-o"></i> 削除</a>
 							</div>
 						</div>
 				</div>
