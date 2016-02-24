@@ -2,6 +2,8 @@
 
 class Helper_Wa
 {
+	const DOMAIN = "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/";
+
 	public static function wa_initialize() {
 		$index = "nanitabe";
 		$type = "foods";
@@ -88,8 +90,36 @@ class Helper_Wa
 		\Helper_Es::create_index($index, $type, $mapping);
 	}
 		
-	public static function get_initial($last, $query) {
+	public static function get_initial($request) {
 		$res = array();
+		$longti = $request["longti"];
+		$lati = $request["lati"];
+		$price = $request["price"];
+		$query = array(
+			"filtered" => array(
+				"query" => array(
+					"match_all" => array()
+				),
+				"filter" => array(
+					"bool" => array(
+						"must" => array(
+							"range" => array(
+								"price" => array(
+									"lt" => $price,
+								)
+							),
+							"geo_distance_range" => array(
+								"from" => "0km",
+								"to" => "0.5km",
+								"pin.location" => array(
+									"lat" => $lati,
+									"lon" => $longti
+								)))))));
+		$res = \Helper_Es::execute_query($query);
+		$ids = array();
+		foreach($res["hits"]["hits"] as $hit) {
+			$ids[] = $hit["food_id"];
+		}	
 		return $res;
 	}
 
