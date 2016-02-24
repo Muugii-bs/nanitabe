@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+.content .ajax-upload-dragdrop{
+	border: 0;
+	padding: 0;
+}
+.content .ajax-upload-dragdrop span{
+	display: none;
+}
+.content .ajax-file-upload{
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	box-shadow: 0 2px 0 0 #ccc;
+	color: #333;
+	font-size: 90%;
+	font-weight: normal;
+	line-height: 23px;
+	height: 35px;
+}
+.content .ajax-file-upload-statusbar{
+	margin: 0 0 10px 0;
+}
+.content .thumbnail-up{
+	position: relative;
+	display: none;
+}
+.content .thumbnail-up img{
+	width: 200px;
+}
+.content .delete_img{
+	margin: 0 0 0 10px;
+	padding: 5px 10px;
+	position: absolute;
+	top: 0;
+	left: 200px;
+}
