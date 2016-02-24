@@ -94,7 +94,35 @@ class Helper_Wa
 	}
 
 	public static function import_food($id) {
-		
+		$index = 'nanitabe';
+		$type = 'foods';
+		$food = \Model_Food::find($id);
+		$shop = \Model_Shop::find($food["shop_id"]);
+		$doc = array(
+			"food_id" => $food["id"],
+			"name" => $food["name"],
+			"shop_id" => $food["shop_id"],
+			"cat1" => $food["cat1"],
+			"cat2" => $food["cat2"],
+			"cat3" => $food["cat3"],
+			"tag1" => $food["tag1"],
+			"tag2" => $food["tag2"],
+			"tag3" => $food["tag3"],
+			"tag4" => $food["tag4"],
+			"tag5" => $food["tag4"],
+			//"created" => $food["created"],
+			"image_path" => $food["image_1"],
+			//"lati" => $food["lati"],
+			//"longti" => $food["longti"],
+			"price" => $food["price"],
+			"updated" => $food["updated"],
+			"shop_name" => $shop["name"],
+			"shop_address" => $shop["address"],
+			"shop_category" => $shop["category"],
+			"shop_zip" => $shop["zip"],
+			//"shop_image" => $shop["image"],
+		);	
+		return \Helper_Es::import_document($index, $type, $id, $doc);
 	}
 }
 

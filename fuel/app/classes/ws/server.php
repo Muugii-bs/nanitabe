@@ -65,7 +65,7 @@ class Ws_Server extends Ratchet_Ws
 		switch ($request["type"]) {
 			case "init":
 				if(isset($request["body"]) && $request["body"]) {
-					$res["body"] = \Helper_Es::get_initial($request["body"]);	
+					$res["body"] = \Helper_Wa::get_initial($request["body"]);	
 					$res["error"] = "";
 					$client->send($res);
 				}
@@ -77,7 +77,7 @@ class Ws_Server extends Ratchet_Ws
 			case "request":
 				if(isset($request["body"]) && $request["body"]) {
 					static::$members[$client->resourceId] = $request["body"];
-					$res["body"] = \Helper_Es::get_response(static::$members[$client->resourceId], $request["body"]);
+					$res["body"] = \Helper_Wa::get_response(static::$members[$client->resourceId], $request["body"]);
 					$res["error"] = "";
 					$client->send($res);
 				}

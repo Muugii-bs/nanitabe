@@ -24,7 +24,7 @@ class Helper_Es
 		$type = $index->getType($_type);
 		$bulk->setType($type);
 		$doc = $type->createDocument($_id, $_doc);
-		$bulk->addDocuments($doc);
+		$bulk->addDocument($doc);
 	  	$res = $bulk->send();
 		if($res->isOk()) {
 			return 'ok';
