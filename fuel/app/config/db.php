@@ -12,7 +12,7 @@ return array(
 			'persistent' => false,
 		),
 		'identifier'	=> '`',
-		'table_prefix'	=> 'cf_',
+		'table_prefix'	=> '',
 		'charset'		=> 'utf8',
 		'collation'		=> false,
 		'enable_cache'	=> true,
