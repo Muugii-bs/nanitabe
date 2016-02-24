@@ -92,7 +92,7 @@ class Controller_Admin extends Controller_Base
 				}
 				else
 				{
-					Session::set_flash('error', $val->error());
+					throw new Exception($val->error());
 				}
 			}
 			catch (Exception $ex)

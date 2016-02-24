@@ -34,3 +34,5 @@ desktop.ini
 /fuel/app/config/config.php
 /fuel/app/config/development/*
 public/.htaccess
+public/image/*/*
+public/upload/*
