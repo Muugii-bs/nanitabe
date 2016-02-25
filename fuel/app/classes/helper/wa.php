@@ -371,6 +371,7 @@ class Helper_Wa
 					"image" => DOMAIN . $hit["_source"]["shop_image"],
 					"zip" => $hit["_source"]["shop_zip"],
 					"address" => $hit["_source"]["shop_address"],
+					"url" => $hit["_source"]["shop_url"],
 					"food" => [
 						"name" => $hit["_source"]["name"],
 						"image" => DOMAIN . $hit["_source"]["image_path"],
@@ -403,17 +404,20 @@ class Helper_Wa
 			"yes_score" => $food["yes"],
 			"no_score" => $food["no"],
 			"food_score" => $food["score"],
-			//"created" => $food["created"],
+			"created" => (string)$food["created"],
 			"image_path" => $food["image_1"],
-			//"lati" => $food["lati"],
-			//"longti" => $food["longti"],
+			"lati" => $food["lati"],
+			"longti" => $food["longti"],
 			"price" => $food["price"],
-			"updated" => $food["updated"],
+			"updated" => (string)$food["updated"],
 			"shop_name" => $shop["name"],
 			"shop_address" => $shop["address"],
 			"shop_category" => $shop["category"],
 			"shop_zip" => $shop["zip"],
-			//"shop_image" => $shop["image"],
+			"shop_image" => $shop["image_1"],
+			"shop_url" => $shop["url"],
+			"shop_tel" => $shop["tel"],
+			"shop_score" => $food["score"]
 		];	
 		return \Helper_Es::import_document($index, $type, $id, $doc);
 //}}}10
@@ -440,17 +444,20 @@ class Helper_Wa
 			"yes_score" => $food["yes"],
 			"no_score" => $food["no"],
 			"food_score" => $food["score"],
-			//"created" => $food["created"],
+			"created" => (string)$food["created"],
 			"image_path" => $food["image_1"],
-			//"lati" => $food["lati"],
-			//"longti" => $food["longti"],
+			"lati" => $food["lati"],
+			"longti" => $food["longti"],
 			"price" => $food["price"],
-			"updated" => $food["updated"],
+			"updated" => (string)$food["updated"],
 			"shop_name" => $shop["name"],
 			"shop_address" => $shop["address"],
 			"shop_category" => $shop["category"],
 			"shop_zip" => $shop["zip"],
-			//"shop_image" => $shop["image"],
+			"shop_image" => $shop["image_1"],
+			"shop_url" => $shop["url"],
+			"shop_tel" => $shop["tel"],
+			"shop_score" => $food["score"]
 		];	
 		return \Helper_Es::delete_document($index, $type, $id, $doc);
 //}}}11
