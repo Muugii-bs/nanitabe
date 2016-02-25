@@ -33,4 +33,5 @@ desktop.ini
 /fuel/app/config/crypt.php
 /fuel/app/config/config.php
 /fuel/app/config/development/*
+/fuel/app/config/production/*
 public/.htaccess

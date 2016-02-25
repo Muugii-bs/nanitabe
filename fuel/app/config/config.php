@@ -272,9 +272,9 @@ return array(
 		 * );
 		 */
 		'packages'  => array(
-		//'ratchet',
-      'orm',
-      'auth',
+		'ratchet',
+      	'orm',
+      	'auth',
 		),
 
 		/**
