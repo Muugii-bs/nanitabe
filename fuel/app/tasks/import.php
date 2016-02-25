@@ -140,6 +140,7 @@ class Import
 					if (\Model_Food::update_image($food_obj->id, $renamed_image_1))
 					{
 						$db->commit_transaction();
+						\Helper_Wa::import_food($food_obj->id);
 					}
 					else
 					{
