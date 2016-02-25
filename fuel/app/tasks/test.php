@@ -73,14 +73,34 @@ class Test
 					"category2" => "すし・魚料理",
 					"category3" => "オイスターバー",
 					"name" => "カキフライ",
-					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6905/65.jpg"
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6905/65.jpg",
+					"price" => 900,
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]]
 				],
 				"11" => [
 					"category1" => "和食",
 					"category2" => "すし・魚料理",
 					"category3" => "寿司",
 					"name" => "赤身細巻き",
-					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6862/11.jpg"
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6862/11.jpg",
+					"price" => 5000,
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]]
 				]
 			],
 			"no" => [
@@ -89,7 +109,17 @@ class Test
 					"category2" => "すし・魚料理",
 					"category3" => "うなぎ",
 					"name" => "うな丼",
+					"price" => 2500,
 					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6923/84.jpg",
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]],
 					"price" => 4000]]];
 		$res = \Helper_Wa::get_response($body, $maxPrice, $minPrice);
 		return json_encode($res);
@@ -108,6 +138,16 @@ class Test
 					"category2" => "すし・魚料理",
 					"category3" => "オイスターバー",
 					"name" => "カキフライ",
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]],
+					"price" => 600,
 					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6905/65.jpg"
 				],
 				"11" => [
@@ -115,6 +155,16 @@ class Test
 					"category2" => "すし・魚料理",
 					"category3" => "寿司",
 					"name" => "赤身細巻き",
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]],
+					"price" => 12345,
 					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6862/11.jpg"
 				]
 			],
@@ -125,6 +175,15 @@ class Test
 					"category3" => "うなぎ",
 					"name" => "うな丼",
 					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6923/84.jpg",
+					"shop" => [
+						"7887" => [
+							"name" => "haha",
+							"tel" => "989890",
+							"image" => "jaklsdjfk",
+							"zip" => "434",
+							"address" => "askdfjk",
+							"url" => "skaljdfk",
+							"yes" => 200]],
 					"price" => 4000]]];
 		$res = \Helper_Wa::get_response($body, $maxPrice, $minPrice);
 		return json_encode($res);

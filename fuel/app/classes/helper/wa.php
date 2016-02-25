@@ -374,7 +374,27 @@ class Helper_Wa
 
 	public static function get_result($yes) {
 //{{{9
-		return $yes;
+		$res = [];
+		foreach($yes as $id => $body) {
+			$shop1 = $body["shop"];
+			$shop = $body["shop"][key($shop1)];
+			$res = [
+				key($shop1) => [
+					"name" => $shop["name"],
+					"tel" => $shop["tel"],
+					"image" => $shop["image"],
+					"zip" => $shop["zip"],
+					"address" => $shop["address"],
+					"url" => $shop["url"],
+					"food" => [
+						"name" => $body["name"],
+						"image" => $body["url"],
+						"price" => $body["price"],
+						"yes" => $shop["yes"],
+						"id" => $id]]];
+		}
+		return $res;
+		/*
 		$query = [
 			"timeout" => "20000ms",
 			"from" => 0,
@@ -412,6 +432,7 @@ class Helper_Wa
 			$result[] = $tmp;
 		}
 		return $result;
+		 */
 //}}}9
 	}
 
