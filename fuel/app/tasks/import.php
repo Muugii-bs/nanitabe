@@ -130,7 +130,7 @@ class Import
 					$image_new_path = $shop_folder_path.'/'.$food_obj->id.'.'.$image_info->getExtension();
 					if (rename(DOCROOT.$tmp_image_path, DOCROOT.$image_new_path))
 					{
-						$renamed_image_1 =  HOST.$image_new_path;
+						$renamed_image_1 =  'http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/'.$image_new_path;
 					}
 					else
 					{
