@@ -15,8 +15,7 @@ class Create_shops
 			'lati' => array('type' => 'double', 'null' => true),
 			'url' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
 			'tel' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
-			'image' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
-			'category' => array('constraint' => 100, 'type' => 'varchar', 'null' => true),
+			'image_1' => array('constraint' => 255, 'type' => 'varchar', 'null' => true),
 			'created_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),
 			'updated_at' => array('constraint' => 11, 'type' => 'int', 'null' => true),
 
