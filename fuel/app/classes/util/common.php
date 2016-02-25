@@ -99,6 +99,7 @@ class Util_Common
 		foreach ($yes_list as $food)
 		{
 			// ここにElasticSearchのdeleteの部分を入れる
+			\Helper_Wa::delete_document($food['id']);
 			$food_obj = Model_Food::find($food['id']);	
 			$food_obj->yes = $food_obj->yes + 1;
 			if ( ! $food_obj->save())
@@ -107,6 +108,7 @@ class Util_Common
 				return false;
 			}
 			// ここにElasticSearchの挿入の部分を入れる
+			\Helper_Wa::import_document($food['id']);
 		}
 		return true;
 	}
