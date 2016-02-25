@@ -2,7 +2,7 @@
 
 class Helper_Wa
 {
-	const DOMAIN = "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/";
+	const MY_DOMAIN = "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/";
 	const BIAS_CAT1 = 4;
 	const BIAS_CAT2 = 3;
 	const BIAS_CAT3 = 2;
@@ -100,8 +100,20 @@ class Helper_Wa
 		$lati = $request["latitude"];
 		$max_price = $request["maxPrice"];
 		$min_price = $request["minPrice"];
+		$must = [];
+		$must[] = [
+			"range" => [
+				"price" => [
+					"gte" => $min_price,
+					"lte" => $max_price]]];
+		$must[] = [
+			"geo_distance" => [
+				"distance" => "0.5km",
+				"pin.location" => [
+					"lon" => $longti,
+					"lat" => $lati]]];
 		$query = [
-			"timeout" => 20 * 1000,
+			"timeout" => "20000ms",
 			"from" => 0,
 			"size" => 100,
 			"query" => [
@@ -111,21 +123,7 @@ class Helper_Wa
 					],
 					"filter" => [
 						"bool" => [
-							"must" => [
-								"range" => [
-									"price" => [
-										"gte" => $min_price,
-										"lte" => $max_price
-									]
-								],
-								"geo_distance_range" => [
-									"from" => "0km",
-									"to" => "0.5km",
-									"pin.location" => [
-										"lat" => $lati,
-										"lon" => $longti]
-								]
-							]
+							"must" => $must
 						]
 					]
 				],
@@ -133,20 +131,19 @@ class Helper_Wa
 					"yes_score" => [
 						"order" => "desc",
 					],
-					"_score",
-				],
+					"_score"
+				]
 			]
 		];
-		return json_encode($query);
 		$res = \Helper_Es::execute_query($query);
 		$tmp = [];
 		foreach($res["hits"]["hits"] as $hit) {
 			$tmp[] = [
 				$hit["_source"]["food_id"] => [
-					"url" => DOMAIN . $hit["_source"]["image_path"],
-					"cat1" => $hit["_source"]["category1"],
-					"cat2" => $hit["_source"]["category2"],
-					"cat3" => $hit["_source"]["category3"],
+					"url" => self::MY_DOMAIN . $hit["_source"]["image_path"],
+					"category1" => $hit["_source"]["cat1"],
+					"category2" => $hit["_source"]["cat2"],
+					"category3" => $hit["_source"]["cat3"],
 					"name" => $hit["_source"]["name"],
 					"price" => $hit["_source"]["price"]]];
 		}	
@@ -155,7 +152,7 @@ class Helper_Wa
 			"result" => []];
 		$rand_keys = array_rand($tmp, 10);
 		foreach($rand_keys as $key) {
-			$fand_res["food"][] = $tmp[$key];
+			$rand_res["food"][] = $tmp[$key];
 		}	
 		return $rand_res;
 //}}}2
@@ -197,11 +194,11 @@ class Helper_Wa
 		$food = [
 			$res["food_id"] => [
 				"name" => $res["name"],
-				"url" => DOMAIN . $res["image_path"],
+				"url" => self::MY_DOMAIN . $res["image_path"],
 				"price" => $res["price"],
 				"category1" => $res["cat1"],
 				"category2" => $res["cat2"],
-				"category3" => $res["cat3"] ]];
+				"category3" => $res["cat3"]]];
 		return $food;
 //}}}5
 	}
@@ -262,17 +259,17 @@ class Helper_Wa
 			}
 		}
 		foreach($cat1 as $i => $c) {
-			if($c >= BIAS_CAT1) {
+			if($c >= self::BIAS_CAT1) {
 				$black_list["cat1"][] = $i;
 			}
 		}
 		foreach($cat2 as $i => $c) {
-			if($c >= BIAS_CAT2) {
+			if($c >= self::BIAS_CAT2) {
 				$black_list["cat2"][] = $i;
 			}
 		}
 		foreach($cat3 as $i => $c) {
-			if($c >= BIAS_CAT3) {
+			if($c >= self::BIAS_CAT3) {
 					$black_list["cat3"][] = $i;
 			}
 		}
@@ -283,7 +280,7 @@ class Helper_Wa
 	public static function get_basic_query($longti, $lati, $max_price, $min_price, $yes, $no) {
 //{{{8
 		$query = [
-			"timeout" => 20 * 1000,
+			"timeout" => "20000ms",
 			"from" => 0,
 			"size" => 1,
 			"filtered" => [
@@ -318,12 +315,11 @@ class Helper_Wa
 							"lte" => $max_price
 						]
 					],
-					"geo_distance_range" => [
-						"from" => "0km",
-						"to" => "0.5km",
+					"geo_distance" => [
+						"distance" => "0.5km",
 						"pin.location" => [
-							"lat" => $lati,
-							"lon" => $longti]]
+							"lon" => $longti,
+							"lat" => $lati]]
 				],
 				"must_not" => $must_not]];
 		$should = [];
@@ -377,13 +373,13 @@ class Helper_Wa
 				$hit["_source"]["shop_id"] => [
 					"name" => $hit["_source"]["shop_name"],
 					"tel" => $hit["_source"]["shop_tel"],
-					"image" => DOMAIN . $hit["_source"]["shop_image"],
+					"image" => self::MY_DOMAIN . $hit["_source"]["shop_image"],
 					"zip" => $hit["_source"]["shop_zip"],
 					"address" => $hit["_source"]["shop_address"],
 					"url" => $hit["_source"]["shop_url"],
 					"food" => [
 						"name" => $hit["_source"]["name"],
-						"image" => DOMAIN . $hit["_source"]["image_path"],
+						"image" => self::MY_DOMAIN . $hit["_source"]["image_path"],
 						"price" => $hit["_source"]["price"],
 						"yes" => $hit["_source"]["yes_score"]]]];
 			$result[] = $tmp;

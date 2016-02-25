@@ -119,6 +119,7 @@ class Import
 					// ここで画像をリネーム（フォルダも作成）する
 					$tmp_image_path = 'public/upload/'.$hashed_image_name;
 					$shop_folder_path = 'public/image/'.$shop_id;
+					$shop_folder_path1 = 'image/'.$shop_id;
 
 					// shop_idフォルダをなければ作成
 					if ( ! file_exists(DOCROOT.$shop_folder_path))
@@ -130,9 +131,10 @@ class Import
 					}
 
 					$image_new_path = $shop_folder_path.'/'.$food_obj->id.'.'.$image_info->getExtension();
+					$image_new_path1 = $shop_folder_path1.'/'.$food_obj->id.'.'.$image_info->getExtension();
 					if (rename(DOCROOT.$tmp_image_path, DOCROOT.$image_new_path))
 					{
-						$renamed_image_1 =  'http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/'.$image_new_path;
+						$renamed_image_1 =  'http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/'.$image_new_path1;
 					}
 					else
 					{
@@ -151,6 +153,7 @@ class Import
 				}
 				catch (Exception $ex)
 				{
+					var_dump($ex);
 					$db->rollback_transaction();
 					continue;
 				}

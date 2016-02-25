@@ -38,6 +38,6 @@ class Test
 			"minPrice" => "300"
 			];
 		$res = \Helper_Wa::get_initial($body);
-		return $res;
+		return json_encode($res);
 	}
 }

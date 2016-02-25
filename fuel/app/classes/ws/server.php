@@ -73,11 +73,12 @@ class Ws_Server extends Ratchet_Ws
 					static::$members[$client->resourceId]["max_price"] = $request["body"]["maxPrice"];
 					static::$members[$client->resourceId]["min_price"] = $request["body"]["minPrice"];
 					try {
-							$res["body"] = \Helper_Wa::get_initial($request["body"]);
+						$res["body"] = \Helper_Wa::get_initial($request["body"]);
+						$client->send(json_encode($res));
 					} catch (Exception $e) {
-							$res["error"] = $e->getMessage();
+						$res["error"] = $e->getMessage();
+						var_dump($res);
 					}
-					$client->send($res);
 				}
 				else {
 					$res["error"] = "Null body error!";
@@ -96,7 +97,7 @@ class Ws_Server extends Ratchet_Ws
 					} catch (Exception $e) {
 						$res["error"] = $e->getMessage();
 					}
-					$client->send($res);
+					$client->send(json_encode($res));
 				}
 				else {
 					$res["error"] = "Null request error!";
@@ -114,7 +115,7 @@ class Ws_Server extends Ratchet_Ws
 					unset(static::$members[$conn->resourceId]);
 				} catch (Exception $e) {
 					$res["error"] = $e->getMessage();
-					$client->send($res);
+					$client->send(json_encode($res));
 				}
 				break;
 	

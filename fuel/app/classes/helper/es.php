@@ -5,7 +5,7 @@ class Helper_Es
 	public static function get_client()
 	{
 		return new \Elastica\Client(array(
-					'host' => 'localhost',
+					'host' => '127.0.0.1',
 					'port' => 9200
 					));
 	}
@@ -45,12 +45,11 @@ class Helper_Es
 		}
 	}
 
-	public static function execute_query($query, $path = "nanitabe/foods/_search") {
-		$response = \Helper_Es::get_client()->request($path, \Elastica\Request::GET, $query);
+	public static function execute_query($query) {
+		$path = "nanitabe/foods/_search";
+		$response = \Helper_Es::get_client()->request($path, \Elastica\Request::GET, "", $query);
 		$responseArray = $response->getData();
 		return $responseArray;
 	}
 
 }
-
-
