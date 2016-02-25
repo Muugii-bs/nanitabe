@@ -101,10 +101,9 @@ class Ws_Server extends Ratchet_Ws
 			case "end":
 				$res["type"] = "end";
 				$client->send(json_encode($res));
-				$conn->close();
-				$this->clients->detach($conn);
-				//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
-				unset(static::$members[$conn->resourceId]);
+				//\Util_Common::save_log(static::$members[$conn->resourceId]);
+				$this->clients->detach($client);
+				//unset(static::$members[$conn->resourceId]);
 				break;
 	
 			default:
