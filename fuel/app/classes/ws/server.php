@@ -72,8 +72,11 @@ class Ws_Server extends Ratchet_Ws
 				if(isset($request["body"]) && $request["body"]) {
 					static::$members[$client->resourceId]["max_price"] = $request["body"]["maxPrice"];
 					static::$members[$client->resourceId]["min_price"] = $request["body"]["minPrice"];
-					$res["body"] = \Helper_Wa::get_initial($request["body"]);	
-					$res["error"] = "";
+					try {
+							$res["body"] = \Helper_Wa::get_initial($request["body"]);
+					} catch (Exception $e) {
+							$res["error"] = $e->getMessage();
+					}
 					$client->send($res);
 				}
 				else {
@@ -85,10 +88,13 @@ class Ws_Server extends Ratchet_Ws
 				$res["type"] = "request";
 				if(isset($request["body"]) && $request["body"]) {
 					static::$members[$client->resourceId]["body"] = $request["body"];
-					$res["body"] = \Helper_Wa::get_response($request["body"], 
-						static::$members[$client->resourceId]["max_price"], 
-						static::$members[$client->resourceId]["min_price"]);
-					$res["error"] = "";
+					try {
+						$res["body"] = \Helper_Wa::get_response($request["body"], 
+					} catch (Exception $e) {
+						$res["error"] = $e->getMessage();
+					}
+					static::$members[$client->resourceId]["max_price"], 
+					static::$members[$client->resourceId]["min_price"]);
 					$client->send($res);
 				}
 				else {
@@ -101,7 +107,11 @@ class Ws_Server extends Ratchet_Ws
 				$client->send(json_encode($res));
 				$conn->close();
 				$this->clients->detach($conn);
-				//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
+				// try {
+				// 	//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
+				// } catch (Exception $e) {
+					
+				// }
 				unset(static::$members[$conn->resourceId]);
 	
 			default:
