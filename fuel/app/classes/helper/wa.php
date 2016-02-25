@@ -104,31 +104,40 @@ class Helper_Wa
 			"timeout" => 20 * 1000,
 			"from" => 0,
 			"size" => 100,
-			"filtered" => [
+			"query" => [
+				"filtered" => [
+					"query" => [
+						"match_all" => []
+					],
+					"filter" => [
+						"bool" => [
+							"must" => [
+								"range" => [
+									"price" => [
+										"gte" => $min_price,
+										"lte" => $max_price
+									]
+								],
+								"geo_distance_range" => [
+									"from" => "0km",
+									"to" => "0.5km",
+									"pin.location" => [
+										"lat" => $lati,
+										"lon" => $longti]
+								]
+							]
+						]
+					]
+				],
 				"sort" => [
 					"yes_score" => [
 						"order" => "desc",
 					],
 					"_score",
 				],
-				"query" => [
-					"match_all" => []
-				],
-				"filter" => [
-					"bool" => [
-						"must" => [
-							"range" => [
-								"price" => [
-									"gte" => $min_price,
-									"lte" => $max_price
-								]
-							],
-							"geo_distance_range" => [
-								"from" => "0km",
-								"to" => "0.5km",
-								"pin.location" => [
-									"lat" => $lati,
-									"lon" => $longti]]]]]]];
+			]
+		];
+		return json_encode($query);
 		$res = \Helper_Es::execute_query($query);
 		$tmp = [];
 		foreach($res["hits"]["hits"] as $hit) {
@@ -406,8 +415,12 @@ class Helper_Wa
 			"food_score" => $food["score"],
 			"created" => (string)$food["created"],
 			"image_path" => $food["image_1"],
-			"lati" => $shop["lati"],
-			"longti" => $shop["longti"],
+			"pin" => [
+				"location" => [
+					"lat" => $shop["lati"],
+					"lon" => $shop["longti"],
+				]
+			],
 			"price" => (int)$food["price"],
 			"updated" => (string)$food["updated"],
 			"shop_name" => $shop["name"],
@@ -446,8 +459,12 @@ class Helper_Wa
 			"food_score" => $food["score"],
 			"created" => (string)$food["created"],
 			"image_path" => $food["image_1"],
-			"lati" => $food["lati"],
-			"longti" => $shop["longti"],
+			"pin" => [
+				"location" => [
+					"lat" => $shop["lati"],
+					"lon" => $shop["longti"],
+				]
+			],
 			"price" => (int)$shop["price"],
 			"updated" => (string)$food["updated"],
 			"shop_name" => $shop["name"],

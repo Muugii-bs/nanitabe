@@ -5,7 +5,7 @@ class Helper_Es
 	public static function get_client()
 	{
 		return new \Elastica\Client(array(
-					'host' => '127.0.0.1',
+					'host' => 'localhost',
 					'port' => 9200
 					));
 	}

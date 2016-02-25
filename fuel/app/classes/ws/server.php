@@ -72,7 +72,7 @@ class Ws_Server extends Ratchet_Ws
 				if(isset($request["body"]) && $request["body"]) {
 					static::$members[$client->resourceId]["max_price"] = $request["body"]["maxPrice"];
 					static::$members[$client->resourceId]["min_price"] = $request["body"]["minPrice"];
-					$res["body"] = \Helper_Wa::get_initial($request["body"]);	
+					$res["body"] = \Helper_Wa::get_initial($request["body"]);
 					$res["error"] = "";
 					$client->send($res);
 				}
