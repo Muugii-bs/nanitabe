@@ -118,7 +118,14 @@ class Controller_Food extends Controller_Base
 						throw new Exception('料理の保存に問題が発生しました。');	
 					}
 					// ここで画像をリネーム（フォルダも作成）する
-					$renamed_image_1 = Model_Food::rename_image($food_obj->image_1, $food_obj->shop_id, $food_obj->id);
+					if (preg_match('/^http/', $food_obj->image_1))
+					{
+						$renamed_image_1 = $food_obj->image_1;	
+					}
+ 					else
+					{
+						$renamed_image_1 = Model_Food::rename_image($food_obj->image_1, $food_obj->shop_id, $food_obj->id);
+					}
 
 					if (Model_Food::update_image($food_obj->id, $renamed_image_1))
 					{
