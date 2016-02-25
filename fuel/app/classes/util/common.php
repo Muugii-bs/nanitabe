@@ -63,4 +63,51 @@ class Util_Common
 		);
 		return is_null($id) ? $a : $a[$id];
 	}
+
+
+	public static function save_log($result = array())
+	{
+		$log['body'] = json_encode($result);
+		$log_obj = Model_Log::forge($log);
+		if ( ! $log_obj->save())
+		{
+			return false;	
+		}
+		
+		// yes と no の値を更新
+		$yes_list = $result['body']['yes'];
+		if ( ! Util_Common::update_foods_yes($yes_list))
+		{
+			return false;
+		}
+		
+		$no_list = $result['body']['yes'];
+		if ( ! Util_Common::update_foods_yes($no_list))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+
+	public static function update_foods_yes($yes_list = array())
+	{
+		if (empty($yes_list))
+		{
+			return false;
+		}
+		foreach ($yes_list as $food)
+		{
+			// ここにElasticSearchのdeleteの部分を入れる
+			$food_obj = Model_Food::find($food['id']);	
+			$food_obj->yes = $food_obj->yes + 1;
+			if ( ! $food_obj->save())
+			{
+				// ここにElasticSearchの挿入の部分を入れる
+				return false;
+			}
+			// ここにElasticSearchの挿入の部分を入れる
+		}
+		return true;
+	}
 }
