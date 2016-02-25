@@ -35,3 +35,7 @@ desktop.ini
 /fuel/app/config/development/*
 /fuel/app/config/production/*
 public/.htaccess
+public/image/*/*
+public/upload/*
+public/shop/*
+public/csv/*

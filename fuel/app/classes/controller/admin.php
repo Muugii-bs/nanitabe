@@ -83,7 +83,7 @@ class Controller_Admin extends Controller_Base
 					{
 						$db->commit_transaction();
 						Session::set_flash('success', '管理者の保存に成功しました #'.$admin->id.'.');
-						Response::redirect('admin/home');
+						Response::redirect('/');
 					}
 					else
 					{
@@ -92,7 +92,7 @@ class Controller_Admin extends Controller_Base
 				}
 				else
 				{
-					Session::set_flash('error', $val->error());
+					throw new Exception($val->error());
 				}
 			}
 			catch (Exception $ex)

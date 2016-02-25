@@ -22,3 +22,12 @@ require COREPATH.'bootstrap.php';
 
 // Initialize the framework with the config file.
 \Fuel::init('config.php');
+
+if (\Fuel::$env == \Fuel::DEVELOPMENT)
+{
+	define('HOST', 'http://nanitabe.test/');
+}
+else
+{
+	define('HOST', 'http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/');
+}

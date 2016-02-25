@@ -9,7 +9,7 @@
 	<?php echo $food->shop_id; ?></p>
 <p>
 	<strong>Url:</strong>
-	<?php echo $food->url; ?></p>
+	<?php echo $food->image_1; ?></p>
 <p>
 	<strong>Category 1:</strong>
 	<?php echo $food->cat1; ?></p>
@@ -36,5 +36,5 @@
 	<?php echo $food->tag5; ?></p>
 <p>
 	<?php echo Html::anchor('home', '<i class="fa fa-chevron-left"></i> 戻る'); ?>　|　
-	<?php echo Html::anchor('food/edit/'.$product->id, '<i class="fa fa-wrench"></i> 編集'); ?>
+	<?php echo Html::anchor('food/edit/'.$food->id, '<i class="fa fa-wrench"></i> 編集'); ?>
 </p>
