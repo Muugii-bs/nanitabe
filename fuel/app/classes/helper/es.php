@@ -24,7 +24,7 @@ class Helper_Es
 		$type = $index->getType($_type);
 		$bulk->setType($type);
 		$doc = $type->createDocument($_id, $_doc);
-		$bulk->addDocuments($doc);
+		$bulk->addDocument($doc);
 	  	$res = $bulk->send();
 		if($res->isOk()) {
 			return 'ok';
@@ -32,6 +32,18 @@ class Helper_Es
 			return $res->getError();
 		}
 	}	
+
+	public static function delete_document($_index, $_type, $_id, $_doc) {
+		$index = \Helper_Es::get_client()->getIndex($_index);
+		$type = $index->getType($_type);
+		$doc = $type->createDocument($_id, $_doc);
+		$type->deleteDocument($doc);
+		if($res->isOk()) {
+			return 'ok';
+		} else {
+			return $res->getError();
+		}
+	}
 
 	public static function execute_query($query, $path = "nanitabe/foods/_search") {
 		$response = \Helper_Es::get_client()->request($path, \Elastica\Request::GET, $query);

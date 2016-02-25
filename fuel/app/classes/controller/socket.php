@@ -14,4 +14,10 @@ class Controller_Socket extends Controller
 		return Response::forge($view);
 	}
 
+	public function action_es()
+	{
+		$res = \Helper_Wa::import_food(1);
+		return print_r($res);
+	}
+
 }
