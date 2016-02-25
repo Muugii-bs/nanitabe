@@ -16,7 +16,7 @@ class Ws_Server extends Ratchet_Ws
 		$this->validation->add('msg')
 			->add_rule('trim')
 			->add_rule('required')
-			->add_rule('max_length', 1000);
+			->add_rule('max_length', 100000);
 	}
 
 	public function onOpen(\Ratchet\ConnectionInterface $conn) {
@@ -73,7 +73,9 @@ class Ws_Server extends Ratchet_Ws
 					static::$members[$client->resourceId]["max_price"] = $request["body"]["maxPrice"];
 					static::$members[$client->resourceId]["min_price"] = $request["body"]["minPrice"];
 					try {
-						$res["body"] = \Helper_Wa::get_initial($request["body"]);
+						$res["body"] = \Helper_Wa::get_initial($request["body"],
+							static::$members[$client->resourceId]["max_price"],
+							static::$members[$client->resourceId]["max_price"]);
 						$client->send(json_encode($res));
 					} catch (Exception $e) {
 						$res["error"] = $e->getMessage();
