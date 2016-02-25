@@ -37,3 +37,4 @@ public/.htaccess
 public/image/*/*
 public/upload/*
 public/shop/*
+public/csv/*
