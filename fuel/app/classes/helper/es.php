@@ -37,7 +37,7 @@ class Helper_Es
 		$index = \Helper_Es::get_client()->getIndex($_index);
 		$type = $index->getType($_type);
 		$doc = $type->createDocument($_id, $_doc);
-		$type->deleteDocument($doc);
+		$res = $type->deleteDocument($doc);
 		if($res->isOk()) {
 			return 'ok';
 		} else {

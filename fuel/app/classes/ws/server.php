@@ -42,7 +42,7 @@ class Ws_Server extends Ratchet_Ws
 		$conn->send(json_encode($status));
 		$conn->close();
 		$this->clients->detach($conn);
-		\Helper_Wa::save_log(static::$members[$conn->resourceId]);
+		\Util_Common::save_log(static::$members[$conn->resourceId]);
 		unset(static::$members[$conn->resourceId]);
 		/*
 		Log::debug('********** '.__FUNCTION__.' begin **********');
@@ -81,6 +81,7 @@ class Ws_Server extends Ratchet_Ws
 					$res["body"] = [];
 					$client->send(json_encode($res));
 				}
+				break;
 			case "request":
 				$res["type"] = "request";
 				if(isset($request["body"]) && $request["body"]) {
@@ -96,6 +97,7 @@ class Ws_Server extends Ratchet_Ws
 					$res["body"] = [];
 					$client->send(json_encode($res));
 				}
+				break;
 			case "end":
 				$res["type"] = "end";
 				$client->send(json_encode($res));
@@ -103,11 +105,13 @@ class Ws_Server extends Ratchet_Ws
 				$this->clients->detach($conn);
 				//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
 				unset(static::$members[$conn->resourceId]);
+				break;
 	
 			default:
 				$res["type"] = "";
 				$res["error"] = "Non type error!";
 				$client->send(json_encode($res));
+				break;
 		}
 	}	
 }

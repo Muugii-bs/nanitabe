@@ -47,7 +47,9 @@ class Import
 		$shops = array();
 		foreach ($records as $record)
 		{
-			//var_dump($record[1]);exit();
+			if (count($record) < 2) {
+				continue;
+			}
 			if ( ! array_key_exists($record[0], $shop_ids))
 			{
 				$shop = array();
