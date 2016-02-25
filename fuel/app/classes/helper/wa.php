@@ -122,16 +122,22 @@ class Helper_Wa
 								"to" => "0.5km",
 								"pin.location" => [
 									"lat" => $lati,
-									"lon" => $longti
-								]]]]]]];
+									"lon" => $longti]]]]]]];
 		$res = \Helper_Es::execute_query($query);
+		$tmp = [];
 		foreach($res["hits"]["hits"] as $hit) {
-			$pics[] = DOMAIN . $hit["image_path"];
+			$tmp[] = [
+				$hit["food_id"] => [
+					"url" => DOMAIN . $hit["image_path"],
+					"name" => $hit["name"],
+					"price" => $hit["price"]]];
 		}	
-		$rand_res = [];
-		$rand_keys = array_rand($pics, 10);
+		$rand_res = [
+			"food" => [],
+			"result" => []];
+		$rand_keys = array_rand($tmp, 10);
 		foreach($rand_keys as $key) {
-			$fand_res[] = $pics[$key];
+			$fand_res["food"][] = $tmp[$key];
 		}	
 		return $rand_res;
 	}
