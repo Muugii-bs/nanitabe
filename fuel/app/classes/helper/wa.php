@@ -143,7 +143,16 @@ class Helper_Wa
 					"category2" => $hit["_source"]["cat2"],
 					"category3" => $hit["_source"]["cat3"],
 					"name" => $hit["_source"]["name"],
-					"price" => $hit["_source"]["price"]]];
+					"price" => $hit["_source"]["price"],
+					"shop" => [
+						$hit["_source"]["shop_id"] => [
+							"name" => $hit["_source"]["shop_name"],
+							"tel" => $hit["_source"]["shop_tel"],
+							"image" => $hit["_source"]["shop_image"],
+							"zip" => $hit["_source"]["shop_zip"],
+							"address" => $hit["_source"]["shop_address"],
+							"url" => $hit["_source"]["shop_url"],
+							"yes" => $hit["_source"]["yes_score"]]]]];
 		}	
 		$rand_res = [
 			"food" => [],
@@ -196,7 +205,16 @@ class Helper_Wa
 				"price" => $res["price"],
 				"category1" => $res["cat1"],
 				"category2" => $res["cat2"],
-				"category3" => $res["cat3"]]];
+				"category3" => $res["cat3"],
+				"shop" => [
+					$res["shop_id"] => [
+						"name" => $res["shop_name"],
+						"tel" => $res["shop_tel"],
+						"image" => $res["shop_image"],
+						"zip" => $res["shop_zip"],
+						"address" => $res["shop_address"],
+						"url" => $res["shop_url"],
+						"yes" => $res["yes_score"]]]]];
 		return $food;
 //}}}5
 	}
@@ -240,17 +258,17 @@ class Helper_Wa
 		$cat2 = [];
 		$cat3 = [];
 		foreach($no as $id => $body) {
-			if(!$cat1[$body["category1"]]) {
+			if(!isset($cat1[$body["category1"]])) {
 				$cat1[$body["category1"]] = 1;
 			} else {
 				$cat1[$body["category1"]] ++;
 			}
-			if(!$cat2[$body["category2"]]) {
+			if(!isset($cat2[$body["category2"]])) {
 				$cat2[$body["category2"]] = 1;
 			} else {
 				$cat2[$body["category2"]] ++;
 			}
-			if(!$cat3[$body["category3"]]) {
+			if(!isset($cat3[$body["category3"]])) {
 				$cat3[$body["category3"]] = 1;
 			} else {
 				$cat3[$body["category3"]] ++;
@@ -356,21 +374,24 @@ class Helper_Wa
 
 	public static function get_result($yes) {
 //{{{9
+		return $yes;
 		$query = [
 			"timeout" => "20000ms",
 			"from" => 0,
-			"size" => 100,
+			"size" => count($yes),
 			"query" => [
-				"bool" => [
-					"should" => []]]];
-		$should = [];
+				"filtered" => [
+					"filter" => [
+						"bool" => [
+							"must" => [
+								"terms" => []]]]]]];
+		$terms = [];
 		foreach($yes as $id => $body) {
-			$match = [
-				"match" => [
-					"food_id" => $id]];
-			$should[] = $match;
+			$terms[] = [
+				"food_id" => $id];
 		}	
-		$query["query"]["bool"]["should"] = $should;
+		$query["query"]["filtered"]["filter"]["bool"]["must"]["terms"] = $terms;
+		return $query;
 		$res = \Helper_Es::execute_query($query);
 		$result = [];
 		foreach($res["hits"]["hits"] as $hit) {
@@ -386,6 +407,7 @@ class Helper_Wa
 						"name" => $hit["_source"]["name"],
 						"image" => $hit["_source"]["image_path"],
 						"price" => $hit["_source"]["price"],
+						"id" => $hit["_source"]["food_id"],
 						"yes" => $hit["_source"]["yes_score"]]]];
 			$result[] = $tmp;
 		}

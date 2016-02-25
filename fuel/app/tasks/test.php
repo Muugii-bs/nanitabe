@@ -37,7 +37,7 @@ class Test
 			"maxPrice" => "1000",
 			"minPrice" => "300"
 			];
-		$res = \Helper_Wa::get_initial($body);
+		$res = \Helper_Wa::get_initial($body, 10000, 4000);
 		return json_encode($res);
 	}
 	public static function case1()
@@ -62,10 +62,73 @@ class Test
 	}
 	public static function case2()
 	{
+		$maxPrice = 10000;
+		$minPrice = 3000;
+		$body = [
+			"longitude" => "139.7672030",
+			"latitude" => "35.6814580",
+			"yes" => [
+				"65" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "オイスターバー",
+					"name" => "カキフライ",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6905/65.jpg"
+				],
+				"11" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "寿司",
+					"name" => "赤身細巻き",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6862/11.jpg"
+				]
+			],
+			"no" => [
+				"84" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "うなぎ",
+					"name" => "うな丼",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6923/84.jpg",
+					"price" => 4000]]];
+		$res = \Helper_Wa::get_response($body, $maxPrice, $minPrice);
+		return json_encode($res);
 
 	}
 	public static function case3()
 	{
+		$maxPrice = 10000;
+		$minPrice = 3000;
+		$body = [
+			"longitude" => "139.7672030",
+			"latitude" => "35.6814580",
+			"no" => [
+				"65" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "オイスターバー",
+					"name" => "カキフライ",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6905/65.jpg"
+				],
+				"11" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "寿司",
+					"name" => "赤身細巻き",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6862/11.jpg"
+				]
+			],
+			"yes" => [
+				"84" => [
+					"category1" => "和食",
+					"category2" => "すし・魚料理",
+					"category3" => "うなぎ",
+					"name" => "うな丼",
+					"url" => "http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/image/6923/84.jpg",
+					"price" => 4000]]];
+		$res = \Helper_Wa::get_response($body, $maxPrice, $minPrice);
+		return json_encode($res);
+
 
 	}
 }
