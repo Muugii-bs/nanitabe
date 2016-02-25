@@ -40,4 +40,16 @@ class Test
 		$res = \Helper_Wa::get_initial($body);
 		return json_encode($res);
 	}
+	public static function case1()
+	{
+
+	}
+	public static function case2()
+	{
+
+	}
+	public static function case3()
+	{
+
+	}
 }

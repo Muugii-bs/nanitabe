@@ -110,7 +110,7 @@ class Ws_Server extends Ratchet_Ws
 				$client->send(json_encode($res));
 				try {
 				// 	//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
-					$client->close();
+					//$client->close();
 					$this->clients->detach($conn);
 					unset(static::$members[$conn->resourceId]);
 				} catch (Exception $e) {

@@ -140,7 +140,7 @@ class Helper_Wa
 		foreach($res["hits"]["hits"] as $hit) {
 			$tmp[] = [
 				$hit["_source"]["food_id"] => [
-					"url" => self::MY_DOMAIN . $hit["_source"]["image_path"],
+					"url" => $hit["_source"]["image_path"],
 					"category1" => $hit["_source"]["cat1"],
 					"category2" => $hit["_source"]["cat2"],
 					"category3" => $hit["_source"]["cat3"],
@@ -194,7 +194,7 @@ class Helper_Wa
 		$food = [
 			$res["food_id"] => [
 				"name" => $res["name"],
-				"url" => self::MY_DOMAIN . $res["image_path"],
+				"url" => $res["image_path"],
 				"price" => $res["price"],
 				"category1" => $res["cat1"],
 				"category2" => $res["cat2"],
@@ -352,7 +352,7 @@ class Helper_Wa
 	public static function get_result($yes) {
 //{{{9
 		$query = [
-			"timeout" => 20 * 1000,
+			"timeout" => "20000ms",
 			"from" => 0,
 			"size" => 100,
 			"query" => [
@@ -365,7 +365,7 @@ class Helper_Wa
 					"food_id" => $id]];
 			$should[] = $match;
 		}	
-		$query["query"]["bool"]["should"] = $match;
+		$query["query"]["bool"]["should"] = $should;
 		$res = \Helper_Es::execute_query($query);
 		$result = [];
 		foreach($res["hits"]["hits"] as $hit) {
@@ -373,13 +373,13 @@ class Helper_Wa
 				$hit["_source"]["shop_id"] => [
 					"name" => $hit["_source"]["shop_name"],
 					"tel" => $hit["_source"]["shop_tel"],
-					"image" => self::MY_DOMAIN . $hit["_source"]["shop_image"],
+					"image" => $hit["_source"]["shop_image"],
 					"zip" => $hit["_source"]["shop_zip"],
 					"address" => $hit["_source"]["shop_address"],
 					"url" => $hit["_source"]["shop_url"],
 					"food" => [
 						"name" => $hit["_source"]["name"],
-						"image" => self::MY_DOMAIN . $hit["_source"]["image_path"],
+						"image" => $hit["_source"]["image_path"],
 						"price" => $hit["_source"]["price"],
 						"yes" => $hit["_source"]["yes_score"]]]];
 			$result[] = $tmp;
