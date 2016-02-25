@@ -93,13 +93,11 @@ class Helper_Wa
 //}}}1
 	}
 		
-	public static function get_initial($request) {
+	public static function get_initial($request, $max_price, $min_price) {
 //{{{2
 		$res = [];
 		$longti = $request["longitude"];
 		$lati = $request["latitude"];
-		$max_price = $request["maxPrice"];
-		$min_price = $request["minPrice"];
 		$must = [];
 		$must[] = [
 			"range" => [
@@ -167,7 +165,7 @@ class Helper_Wa
 		$res = [];
 		$res["result"] = \Helper_Wa::get_result($yes);
 		if(count($yes) == 0) {
-			$res = \Helper_Wa::get_initial($request);
+			$res = \Helper_Wa::get_initial($request, $max_price, $min_price);
 		} else if(count($yes) < count($no)) {
 			$res["food"] = \Helper_Wa::get_food($longti, $lati, $max_price, $min_price, $yes, $no);
 			$res["result"] = \Helper_Wa::get_result($yes);
@@ -206,7 +204,7 @@ class Helper_Wa
 	public static function get_filtered_food($longti, $lati, $max_price, $min_price, $yes, $no) {
 //{{{6
 		$query = \Helper_Wa::get_basic_query($longti, $lati, $max_price, $min_price, $yes, $no);
-		$must_not = $query["filtered"]["filter"]["bool"]["must_not"];
+		$must_not = $query["query"]["filtered"]["filter"]["bool"]["must_not"];
 		$black_list = \Helper_Wa::get_black_list($no);
 		foreach($black_list["cat1"] as $cat1) {
 			$match = [
@@ -226,7 +224,7 @@ class Helper_Wa
 					"cat3" => $cat3]];
 			$must_not[] = $match;
 		}
-		$query["filtered"]["filter"]["bool"]["must_not"] = $must_not;
+		$query["query"]["filtered"]["filter"]["bool"]["must_not"] = $must_not;
 		$food = \Helper_Wa::get_basic_res($query);
 		return $food;
 //}}}6
@@ -283,16 +281,35 @@ class Helper_Wa
 			"timeout" => "20000ms",
 			"from" => 0,
 			"size" => 1,
-			"filtered" => [
-				"query" => [
-					"bool" => [
-						"must" => [
-							"match_all" => []
-						],
-						"should" => []
-					]
+			"query" => [
+				"filtered" => [
+					"query" => [
+						"bool" => [
+							"must" => [
+								"match_all" => []
+							],
+							"should" => []
+						]
+					],
+					"filter" => []
 				],
-				"filter" => []]];
+				"sort" => [
+					"yes_score" => [
+						"order" => "desc",
+					],
+					"_score"]]];
+		$must = [];
+		$must[] = [
+			"range" => [
+				"price" => [
+					"gte" => $min_price,
+					"lte" => $max_price]]];
+		$must[] = [
+			"geo_distance" => [
+				"distance" => "0.5km",
+				"pin.location" => [
+					"lon" => $longti,
+					"lat" => $lati]]];
 		$must_not = [];
 		foreach($yes as $id => $body) {
 			$match = [
@@ -308,19 +325,7 @@ class Helper_Wa
 		}
 		$filter = [
 			"bool" => [
-				"must" => [
-					"range" => [
-						"price" => [
-							"gte" => $min_price,
-							"lte" => $max_price
-						]
-					],
-					"geo_distance" => [
-						"distance" => "0.5km",
-						"pin.location" => [
-							"lon" => $longti,
-							"lat" => $lati]]
-				],
+				"must" => $must,
 				"must_not" => $must_not]];
 		$should = [];
 		foreach($yes as $id => $body) {
@@ -343,8 +348,8 @@ class Helper_Wa
 						"boost" => 2]]];
 			$should[] = $tmp;
 		}
-		$query["filtered"]["query"]["bool"]["should"] = $should;
-		$query["filtered"]["filter"] = $filter;
+		$query["query"]["filtered"]["query"]["bool"]["should"] = $should;
+		$query["query"]["filtered"]["filter"] = $filter;
 		return $query;
 //}}}8
 	}
