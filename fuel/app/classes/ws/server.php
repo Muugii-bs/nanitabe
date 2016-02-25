@@ -21,7 +21,7 @@ class Ws_Server extends Ratchet_Ws
 
 	public function onOpen(\Ratchet\ConnectionInterface $conn) {
 		parent::onOpen($conn);
-		$this->clients->attach($conn);
+		//$this->clients->attach($conn);
 		static::$members[] = array(
 			$conn->resourceId => array(
 				"body" => array(),
@@ -40,10 +40,10 @@ class Ws_Server extends Ratchet_Ws
 			'error' => 'none',
 		);
 		$conn->send(json_encode($status));
-		$conn->close();
-		$this->clients->detach($conn);
-		\Util_Common::save_log(static::$members[$conn->resourceId]);
+		//$this->clients->detach($conn);
+		//\Util_Common::save_log(static::$members[$conn->resourceId]);
 		unset(static::$members[$conn->resourceId]);
+		$conn->close();
 		/*
 		Log::debug('********** '.__FUNCTION__.' begin **********');
 		Log::debug('before members : '.print_r($this->clients, true));
@@ -113,7 +113,7 @@ class Ws_Server extends Ratchet_Ws
 				try {
 				// 	//\Helper_Wa::save_log(json_encode(static::$members[$conn->resourceId]));
 					//$client->close();
-					$this->clients->detach($conn);
+					//$this->clients->detach($conn);
 					unset(static::$members[$conn->resourceId]);
 				} catch (Exception $e) {
 					$res["error"] = $e->getMessage();
