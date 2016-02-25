@@ -98,7 +98,7 @@ class Helper_Wa
 		$query = [
 			"timeout" => 20 * 1000,
 			"from" => 0,
-			"size" => 10,
+			"size" => 100,
 			"filtered" => [
 				"sort" => [
 					"yes_score" => [
@@ -128,7 +128,12 @@ class Helper_Wa
 		foreach($res["hits"]["hits"] as $hit) {
 			$pics[] = DOMAIN . $hit["image_path"];
 		}	
-		return $pics;
+		$rand_res = [];
+		$rand_keys = array_rand($pics, 10);
+		foreach($rand_keys as $key) {
+			$fand_res[] = $pics[$key];
+		}	
+		return $rand_res;
 	}
 
 	public static function get_request($query) {
