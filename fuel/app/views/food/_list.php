@@ -13,6 +13,6 @@
 			<?php endif; ?>
 			<?php $cnt++; ?>
 		<?php endforeach; ?>
-	</ul>
+	</div>
 </div>
 <!-- /.foodList -->

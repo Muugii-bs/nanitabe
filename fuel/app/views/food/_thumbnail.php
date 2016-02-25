@@ -3,7 +3,7 @@
 	<div class="box box-widget">
         <div class="box-header with-border">
 			<div class="user-block">
-				<img class="img-circle" src="/dist/img/user1-128x128.jpg" alt="User Image">
+				<img class="img-circle" src="<?php echo $current_admin['image']; ?>" alt="User Image">
 				<span class="username">
 					<a href="/food/edit/<?php echo $food->id; ?>"><?php echo $food->name; ?></a>
 				</span>
@@ -17,7 +17,7 @@
         <!-- /.box-header -->
         <div class="box-body">
 			<img class="img-responsive pad" src="<?php echo $food->image_1; ?>" alt="Photo">
-			<span class="pull-right text-muted">〇〇 likes</span>
+			<span class="pull-right text-muted"><?php echo $food->yes; ?> likes</span>
         </div>
         <!-- /.box-body -->
 	</div>

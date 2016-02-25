@@ -20,6 +20,12 @@ class Controller_Base extends Controller_Template
 		$this->current_admin['group'] = $current_admin['group'];
 		$this->current_admin['email'] = $current_admin['email'];
 		$this->current_admin['shop_id'] = $current_admin['shop_id'];
+		if (!empty($this->current_admin['shop_id']))
+		{
+			$shop = Model_Shop::find($this->current_admin['shop_id']);
+			$this->current_admin['image'] = $shop->image_1;
+			$this->current_admin['shop_name'] = $shop->name;
+		}
 
 		// Set a global variable so views can use it
 		View::set_global('current_admin', $this->current_admin);
