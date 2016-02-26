@@ -1,39 +1,36 @@
-#FuelPHP
+# なに食べ
+topic_debug_wsブランチの参照をお願いします。
 
-* Version: 1.7.2
-* [Website](http://fuelphp.com/)
-* [Release Documentation](http://docs.fuelphp.com)
-* [Release API browser](http://api.fuelphp.com)
-* [Development branch Documentation](http://dev-docs.fuelphp.com)
-* [Development branch API browser](http://dev-api.fuelphp.com)
-* [Support Forum](http://fuelphp.com/forums) for comments, discussion and community support
+http://ec2-52-25-104-208.us-west-2.compute.amazonaws.com/
+baavgai
+baavgai_123
 
-## Description
+## 開発環境
+- Ubuntu 14.04
+- PHP 5.5.9
+- FuelPHP Version: 1.7.2
+- MySQL 5.5.47
+- AWS
+- Java 1.7.0_95
+- Elastic Search
 
-FuelPHP is a fast, lightweight PHP 5.3 framework. In an age where frameworks are a dime a dozen, We believe that FuelPHP will stand out in the crowd.  It will do this by combining all the things you love about the great frameworks out there, while getting rid of the bad.
+## 技術仕様
+### Webアプリケーション
+FuelPHPで実装
+- お店の管理者登録
+- お店の情報編集
+- 料理の登録・編集
 
-## More information
+### 推薦する料理の更新サーバー
+iOS側とWebSocket通信しリアルタイムで更新する
+iOS側でのyes/noの履歴から以下の更新アルゴリズムをもって更新する
+更新はクエリを更新し毎回ElasticSearchで再検索をかけていく
+- ratchet
 
-For more detailed information, see the [development wiki](https://github.com/fuelphp/fuelphp/wiki).
-
-##Development Team
-
-* Harro Verton - Project Manager, Developer ([http://wanwizard.eu/](http://wanwizard.eu/))
-* Frank de Jonge - Developer ([http://frenky.net/](http://frenky.net/))
-* Steve West - Developer
-
-### Want to join?
-
-The FuelPHP development team is always looking for new team members, who are willing
-to help lift the framework to the next level, and have the commitment to not only
-produce awesome code, but also great documentation, and support to our users.
-
-You can not apply for membership. Start by sending in pull-requests, work on outstanding
-feature requests or bugs, and become active in the #fuelphp IRC channel. If your skills
-are up to scratch, we will notice you, and will ask you to become a team member.
-
-### Alumni
-
-* Jelmer Schreuder - Developer ([http://jelmerschreuder.nl/](http://jelmerschreuder.nl/))
-* Phil Sturgeon - Developer ([http://philsturgeon.co.uk](http://philsturgeon.co.uk))
-* Dan Horrigan - Founder, Developer ([http://dhorrigan.com](http://dhorrigan.com))
+#### 更新アルゴリズム
+1. 初期のn枚はフィルタリングしない
+2. n枚のyes/no選択の後、categoryのcardinarityをもとにフィルタリングをかけていく
+	- name: 商品名（１回のno）
+	- cat3: 小カテゴリ（2回のno）
+	- cat2: 中カテゴリ（3回のno）
+	- cat1: 大カテゴリ（4回のno）
