@@ -136,8 +136,8 @@ class Helper_Wa
 		$res = \Helper_Es::execute_query($query);
 		$tmp = [];
 		foreach($res["hits"]["hits"] as $hit) {
-			$tmp[] = [
-				$hit["_source"]["food_id"] => [
+			$tmp[] = [[
+					"id" => $hit["_source"]["food_id"],
 					"url" => $hit["_source"]["image_path"],
 					"category1" => $hit["_source"]["cat1"],
 					"category2" => $hit["_source"]["cat2"],
