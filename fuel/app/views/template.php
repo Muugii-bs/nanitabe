@@ -24,6 +24,7 @@
 	<?php echo Asset::js('js/app.min.js'); ?>
 	<?php echo Asset::js('js/jquery.slimscroll.min.js'); ?>
 	<?php echo Asset::js('default.js'); ?>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;region=JP"></script>
 </head>
 
 <body class="skin-blue fixed">

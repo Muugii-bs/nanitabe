@@ -22,6 +22,7 @@
 					<?php echo Form::label('住所', 'address', array('class'=>'col-sm-2 control-label')); ?>
 						<div class="col-sm-9">
 						<?php echo Form::input('address', Input::post('address', isset($shop) ? $shop->address : ''), array('class' => 'col-md-4 form-control min', 'placeholder'=>'住所')); ?>
+						<input id="execute" type="button" value="経度・緯度の取得" class="btn btn-sm btn-info">
 						</div>
 				</div>
 				<div class="form-group">
@@ -71,3 +72,22 @@
 		<?php echo Form::close(); ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+  $(function(){
+  var geocoder = new google.maps.Geocoder();
+  $("#execute").click(function(){
+    geocoder.geocode({
+      address: $("#form_address").val()
+    },
+    function(data, status){
+      if (status == google.maps.GeocoderStatus.OK) {
+        $("#form_lati").val(data[0].geometry.location.lat());
+        $("#form_longti").val(data[0].geometry.location.lng());
+      } else {
+        alert("次のエラーが発生しました。: " + status);
+      }
+    });
+  });
+});
+</script>
