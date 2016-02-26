@@ -62,7 +62,7 @@ class Ws_Server extends Ratchet_Ws
 		parent::onMessage($client, $msg);
 		$request = json_decode($msg, true);
 		$res = array(
-			"init" => "",
+			"type" => "",
 			"body" => array(),
 			"error" => ""
 		);
